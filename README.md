@@ -55,10 +55,15 @@ Todo: Add product state information
 ## Running the code yourself.
 There are 4 pieces of information you need for your own device. I'll update how to get this later. 
 They are:
+
 -USERNAME = ''
+
 -PASSWORD = ''
+
 -HOST = '' 
+
 -PORT = 1883 (default unencrypted port)
+
 -IDENTIFIER = '455'
 
 ## To-do:
