@@ -17,7 +17,7 @@ def create_client():
     client.on_message = on_message
     client.on_publish = on_publish
     client.connect(secrets.HOST, port = secrets.PORT, keepalive = 60 )
-    client.loop_start
+    client.loop_start()
     print("Client Created")
     return client
 
@@ -32,12 +32,11 @@ def on_connect (client, userdata, flags, response_code):
         print("Failed")
 
 def on_message (client, userdata, msg):
-    update = json.loads(msg.payload)
-    # print(msg.topic)
-    # pprint.pprint(update)
-
-    if update['msg'] == 'CURRENT-STATE':
-        pprint.pprint(update['product-state']['tilt'])
+    payload = json.loads(msg.payload.decode("utf-8"))
+    print("------------")
+    for key,value in payload.items():
+        print(f"{key} : {value}")
+    print("------------")
 
 def on_publish(client,userdata, msg, retain=True):
     pass
