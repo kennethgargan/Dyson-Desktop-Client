@@ -1,46 +1,46 @@
-import secrets
 import paho.mqtt.client as mqtt
+import secrets
 import json
-import pprint
 
-# There are 5 topics to subscribe to:
 topic_publish = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/command"
 topic_current = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/status/current"
 topic_software = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/status/software"
 topic_connection = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/status/connection"
 topic_faults = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/status/faults"
 
-def create_client():
-    client = mqtt.Client(protocol = mqtt.MQTTv311)
-    client.username_pw_set (secrets.USERNAME, secrets.PASSWORD)
-    client.on_connect = on_connect
-    client.on_message = on_message
-    client.on_publish = on_publish
-    client.connect(secrets.HOST, port = secrets.PORT, keepalive = 60 )
-    client.loop_start()
-    print("Client Created")
-    return client
+class MQTT:
+    def __init__(self, model, clientid=None):
+        self.model = model
+        self.client = mqtt.Client(clientid)
+        self.client.on_message = self.mqtt_on_message
+        self.client.on_connect = self.mqtt_on_connect
+        self.client.on_publish = self.mqtt_on_publish
+        #self.client.on_subscribe = self.mqtt_on_subscribe
+        self.client.username_pw_set (secrets.USERNAME, secrets.PASSWORD)
+        self.client.connect(secrets.HOST, port = secrets.PORT, keepalive = 60 )
+        self.client.loop_start()
 
-def on_connect (client, userdata, flags, response_code):
-    if response_code == 0:
-        print("Connected. ")
-        client.subscribe(topic_current)
-        client.subscribe(topic_software)
-        client.subscribe(topic_connection)
-        client.subscribe(topic_faults)
-    else:
-        print("Failed")
+    def mqtt_on_message(self,client,userdata,msg):
+        payload = json.loads(msg.payload.decode("utf-8"))
+        print(payload)
+        if 'product-state' in payload.keys():
+            self.model.update_fan_data(payload['product-state'])
 
-def on_message (client, userdata, msg):
-    payload = json.loads(msg.payload.decode("utf-8"))
-    print("------------")
-    for key,value in payload.items():
-        print(f"{key} : {value}")
-    print("------------")
+    def mqtt_on_connect(self,client, userdata, flags, response_code):
+        if response_code == 0:
+            print("Connected. ")
+            self.client.subscribe(topic_current)
+            self.client.subscribe(topic_software)
+            self.client.subscribe(topic_connection)
+            self.client.subscribe(topic_faults)
+        else:
+            print("Failed")
+    def mqtt_on_publish(self,client,userdata,msg,retain=True):
+        pass
 
-def on_publish(client,userdata, msg, retain=True):
-    pass
+    def publish_message(self,data):
+        print(data)
+        self.client.publish(topic_publish,data)
 
-def publish_message(client,data):
-    client.publish(topic_publish,data)
-    
+    def loop_stop(self):
+        self.client.loop_stop()
