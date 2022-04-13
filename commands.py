@@ -1,12 +1,10 @@
 import datetime
 import json
-import secrets
-
 
 # The data sent for each action (turning on, fan speed, heating temp etc) all use the same format with the only change being the data in the data key.
 # We create a Parent class with this template and all the child classes have their own implementation of it with the added data + the value that will be passed in.
 
-class command_handler:
+class Commands:
     def __init__(self):
         self.publish_template = {
             'data' : {

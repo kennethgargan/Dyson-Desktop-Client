@@ -1,11 +1,12 @@
 #Work in progress!
-import mqtt_client
-import command_handler
-import command
+from model import Model
+from commands import Commands
+from mqtt_client import MQTT
 import time
 
+
 if __name__ == '__main__' :
-    commands = command_handler()
+    commands = Commands()
     command_list = {
         'state': commands.set_state,
         'mode' : commands.set_mode,
@@ -18,19 +19,17 @@ if __name__ == '__main__' :
         'current':commands.get_current_state,
         'help':commands.get_help
     }
-    client = mqtt_client.create_client()
+    #client = mqtt_client.create_client()
+    model = Model()
+    mqtt = MQTT(model)
     time.sleep(2)
     print("Ready to use.")
     print("Supported commands:  " + str([*command_list.keys()]))
+
     while True:
         user_input = input()
-
         if ":" in user_input:
-            user_input = user_input.split(':')
-            if user_input[0] in command_list.keys():
-                mqtt_client.publish_message(client,command_list[user_input[0]](user_input[1]))
-        elif user_input == "current":
-            mqtt_client.publish_message(client,commands.get_current_state())
-        elif user_input[0] == 'disconnect':
-            break
-    client.loop_stop()
+            user_input = user_input.split(":")
+            mqtt.publish_message(command_list[user_input[0]](user_input[1]))
+        else:
+            mqtt.publish_message(command_list[user_input]())
