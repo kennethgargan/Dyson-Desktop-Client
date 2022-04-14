@@ -22,9 +22,11 @@ class MQTT:
 
     def mqtt_on_message(self,client,userdata,msg):
         payload = json.loads(msg.payload.decode("utf-8"))
-        print(payload)
-        if 'product-state' in payload.keys():
+        print(f"message payload: {payload}")
+        if payload['msg'] == "CURRENT-STATE":
             self.model.update_fan_data(payload['product-state'])
+        if payload['msg'] == "ENVIRONMENTAL-CURRENT-SENSOR-DATA":
+            self.model.update_env_data(payload['data'])
 
     def mqtt_on_connect(self,client, userdata, flags, response_code):
         if response_code == 0:

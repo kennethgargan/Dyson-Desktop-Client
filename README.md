@@ -68,7 +68,7 @@ They are:
 
 ## To-do:
 - Document the rest of the data
-- Add function to get the fan's current state
+- Add reactive approach to handling data driven events (Fan change information)
 - Add GUI
 - Update documentation
 - Refactor
