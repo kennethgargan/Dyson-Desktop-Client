@@ -106,6 +106,15 @@ class Commands:
         }
         publish_data['time'] = self.get_time()
         return json.dumps(publish_data,indent=2)
+
+    def get_env_state(self):
+        publish_data = {
+            'mode-reason' : 'LAPP',
+            'time' : '',
+            'msg' : 'REQUEST-ENVIRONMENTAL-CURRENT-SENSOR-DATA'
+        }
+        publish_data['time'] = self.get_time()
+        return json.dumps(publish_data,indent=2)
     
     def get_help(self, value):
         command_info = {
