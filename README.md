@@ -37,7 +37,7 @@ There are 4 topics we can subscribe to:
 -Faults
 
 ## Data Explaination: 
-### STATE-SET
+### STATE
 | Abbreviations  | Values | Meaning |
 | ------------- | ------------- | ------------- |
 | ercd    | I've only seen NONE  | Error Code |
@@ -50,7 +50,15 @@ There are 4 topics we can subscribe to:
 | oson | ON, OFF | Sets the fan’s oscillation on or off |
 |sltm | 4 digits required | Sets the timer, data is sent in minutes |
 
-Todo: Add product state information
+### SENSOR DATA
+| Abbreviations  | Values | Meaning |
+| ------------- | ------------- | ------------- |
+| hact    | 0000 - 0100   | Humidity as a percentage |
+| pact    | 0000 - 0009   | Dust in the room  |
+| sltm    | OFF OR Max time value(?)   | Sleep Timer |
+| tact    | 0000 - ????   | Temperature in Kelvin |
+| vact    | 0001 - 0009   | Air quality/organic compounds |
+
 
 ## Running the code yourself.
 There are 4 pieces of information you need for your own device. I'll update how to get this later. 
