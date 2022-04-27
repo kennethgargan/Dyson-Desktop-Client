@@ -82,4 +82,15 @@ They are:
 - Refactor
 
 ## Thoughts on this project.
-Coming Soon
+I started this project for a few reasons: 
+1): I didn't want to keep having to use my phone for controlling the fan. Especially since I'm mostly at my desk when I need to use it.
+
+2): I have been getting a few bugs in the Dyson app that haven't gone away for the past few years.
+
+3): The fan itself works perfectly, I wanted to make sure that I can extend the life of it by adding features that I need. 
+
+4): I thought it would be fun!
+
+This project really has been a lot of fun. From my initial steps of thinking of how to reverse engineer it to learning about MQTT to finally implementing a basic function to switch the fan on. I've enjoyed every step of it! 
+
+If I had to do one thing differently, I would maybe design it as a locally hosted web app instead. The reason being is that IoT devices are becoming more and more prominent. While this is my only IoT device, if I got another one that I also wanted to reverse engineer, it would be a lot easier to design my own app for IoT devices and take a modular approach to how new devices get added.
