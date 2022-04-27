@@ -10,7 +10,7 @@ An application that allows you to control a Dyson Fan from desktop. (Work in Pro
 * [Data Explaination](#data-explaination)
 * [Running The Code Yourself](#running-the-code-yourself)
 * [To-do](#to-do)
-* [Thoughts on this project.](thoughts-on-this-project-&-what-i've-learned)
+* [Thoughts on this project.](#thoughts-on-this-project.)
 
 ## About.
 Allows you to control your Dyson Fan through your PC.
