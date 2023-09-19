@@ -1,35 +1,26 @@
 #Work in progress!
 from model import Model
-from commands import Commands
+from view import View
+from controller import Controller
 from mqtt_client import MQTT
-import time
 
+import customtkinter as ctk
+
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        #Using the MVC architectural pattern.
+        # Any changes to UI data should come from the controller and the data should be based of what the MQTT broker (in our case the fan) sends. 
+        # For example changing the fan speed. If we have a slider to do this, we will take the users input, However we should *never* update the fan speed model data. That data should only ever be updated from the f
+        model = Model()
+        view  = View(self)
+        mqtt_client = MQTT()
+
+        controller = Controller(model,view,mqtt_client)
+        
+        mqtt_client.set_controller(controller)
+        view.set_controller(controller)
 
 if __name__ == '__main__' :
-    commands = Commands()
-    command_list = {
-        'state': commands.set_state,
-        'mode' : commands.set_mode,
-        'speed': commands.set_speed,
-        'temp': commands.set_temp,
-        'timer': commands.set_timer,
-        'osci': commands.set_osci,
-        'night': commands.set_nmod,
-        'diffused': commands.set_diffused,
-        'current':commands.get_current_state,
-        'help':commands.get_help
-    }
-    #client = mqtt_client.create_client()
-    model = Model()
-    mqtt = MQTT(model)
-    time.sleep(2)
-    print("Ready to use.")
-    print("Supported commands:  " + str([*command_list.keys()]))
-
-    while True:
-        user_input = input()
-        if ":" in user_input:
-            user_input = user_input.split(":")
-            mqtt.publish_message(command_list[user_input[0]](user_input[1]))
-        else:
-            mqtt.publish_message(command_list[user_input]())
+    app = App()
+    app.mainloop()

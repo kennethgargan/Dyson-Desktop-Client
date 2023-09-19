@@ -9,8 +9,7 @@ topic_connection = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/status/connection"
 topic_faults = f"{secrets.IDENTIFIER}/{secrets.USERNAME}/status/faults"
 
 class MQTT:
-    def __init__(self, model, clientid=None):
-        self.model = model
+    def __init__(self, clientid=None):
         self.client = mqtt.Client(clientid)
         self.client.on_message = self.mqtt_on_message
         self.client.on_connect = self.mqtt_on_connect
@@ -24,9 +23,10 @@ class MQTT:
         payload = json.loads(msg.payload.decode("utf-8"))
         print(f"message payload: {payload}")
         if payload['msg'] == "CURRENT-STATE":
-            self.model.update_fan_data(payload['product-state'])
+            self.controller.update_fan_data(payload['product-state'])
+
         if payload['msg'] == "ENVIRONMENTAL-CURRENT-SENSOR-DATA":
-            self.model.update_env_data(payload['data'])
+            self.controller.update_env_data(payload['data'])
 
     def mqtt_on_connect(self,client, userdata, flags, response_code):
         if response_code == 0:
@@ -46,3 +46,7 @@ class MQTT:
 
     def loop_stop(self):
         self.client.loop_stop()
+
+    def set_controller(self,controller):
+        self.controller = controller
+    
